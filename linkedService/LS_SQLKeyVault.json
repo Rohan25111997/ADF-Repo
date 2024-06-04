@@ -1,0 +1,25 @@
+{
+	"name": "LS_SQLKeyVault",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "pocsqlserver001.database.windows.net",
+			"database": "PocSqlDatabase001",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"hostNameInCertificate": "",
+			"authenticationType": "SQL",
+			"userName": "Roshan",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_Keyvault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SQLConnectionString"
+			}
+		}
+	}
+}

@@ -1,0 +1,72 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Source_DERIVED_Trans_Dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "source"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Dest_DERIVED_Trans_Dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          department as string,",
+				"          salary as integer,",
+				"          joining_date as date,",
+				"          email as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source",
+				"source derive(salary = iif(isNull(salary),37777,salary),",
+				"          first_name = upper(first_name),",
+				"          Full_Name = concatWS(' ',first_name,last_name)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          Full_Name,",
+				"          department,",
+				"          email,",
+				"          joining_date,",
+				"          salary",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Emp_id as string,",
+				"          Name as string,",
+				"          age as string,",
+				"          salary as string,",
+				"          location as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink"
+			]
+		}
+	}
+}
