@@ -23,9 +23,6 @@
 		"LS_SQLKeyVault_properties_typeProperties_userName": {
 			"value": "Roshan"
 		},
-		"trigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/14b54a77-42f5-40d1-8202-360631e7ec2c/resourceGroups/Naresh-RG-01/providers/Microsoft.Storage/storageAccounts/srcsa2024"
-		},
 		"containerUri": {
 			"value": ""
 		},
