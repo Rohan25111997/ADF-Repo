@@ -1,0 +1,67 @@
+{
+	"name": "By Particular File Length Copy Data",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {Student_ID                Student_Name                                               Address                  } as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(Student_ID = substring({Student_ID                Student_Name                                               Address                  }, 1, 26),",
+				"          Student_Name = substring({Student_ID                Student_Name                                               Address                  }, 26, 59),",
+				"          Address = substring({Student_ID                Student_Name                                               Address                  }, 85, 25)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          Student_ID,",
+				"          Student_Name,",
+				"          Address",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Student_ID,",
+				"          Student_Name,",
+				"          Address",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
