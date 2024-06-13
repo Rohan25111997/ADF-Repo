@@ -1,0 +1,63 @@
+{
+	"name": "CSV to JSON Nested Hierarchy",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Csv2JsonNested",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as short,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as double,",
+				"          battersId as short,",
+				"          battersType as string,",
+				"          toppingID as short,",
+				"          toppingType as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(topping = @(t_id=toppingID,",
+				"          t_type=toppingType),",
+				"          batter = @(b_id=battersId,",
+				"          b_type=battersType)) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(id,",
+				"          type,",
+				"          name,",
+				"          ppu),",
+				"     toppings = collect(topping),",
+				"          batters = collect(batter)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
