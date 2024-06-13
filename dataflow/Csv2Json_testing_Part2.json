@@ -1,0 +1,52 @@
+{
+	"name": "Csv2Json_testing_Part2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Csv2Json_Source_part2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          type as string,",
+				"          name as string,",
+				"          ppu as string,",
+				"          battersId as string,",
+				"          battersType as string,",
+				"          toppingId as string,",
+				"          toppingType as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(batters = @(id=@(b_id=battersId,",
+				"          b_type=battersType),",
+				"          type=battersType),",
+				"          topping = @(t_id=toppingId,",
+				"          t_type=toppingType)) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(id,",
+				"          type,",
+				"          name,",
+				"          ppu),",
+				"     batters = collect(batters),",
+				"          topping = collect(topping)) ~> aggregate1"
+			]
+		}
+	}
+}
