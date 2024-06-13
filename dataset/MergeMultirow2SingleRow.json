@@ -1,0 +1,55 @@
+{
+	"name": "MergeMultirow2SingleRow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "testing"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "type",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "ppu",
+				"type": "String"
+			},
+			{
+				"name": "battersId",
+				"type": "String"
+			},
+			{
+				"name": "battersType",
+				"type": "String"
+			},
+			{
+				"name": "toppingID",
+				"type": "String"
+			},
+			{
+				"name": "toppingType",
+				"type": "String"
+			}
+		]
+	}
+}
