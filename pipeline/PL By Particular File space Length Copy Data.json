@@ -1,5 +1,5 @@
 {
-	"name": "PL By Particular File Length Copy Data",
+	"name": "PL By Particular File space Length Copy Data",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "By Particular File Length Copy Data",
+						"referenceName": "By Particular File space Length Copy Data",
 						"type": "DataFlowReference"
 					},
 					"compute": {

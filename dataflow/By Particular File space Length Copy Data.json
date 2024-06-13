@@ -1,5 +1,5 @@
 {
-	"name": "By Particular File Length Copy Data",
+	"name": "By Particular File space Length Copy Data",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
